@@ -16,6 +16,8 @@ jobs:
     steps:
     - name: Pull Docker image
       uses: docker://cfeicommon/maven-jdk8-fx:latest
+    - name: Checkout repo
+      uses: actions/checkout@v2
     - name: Compile TANKS
       working-directory: ./TANKS
       run: mvn compile

@@ -1,2 +1,7 @@
-obj/**
-bin/**
+
+# Match C# generated folders globally 
+**/obj
+**/bin
+
+# Match idea folders globally
+**/.idea

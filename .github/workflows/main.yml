@@ -16,7 +16,7 @@ jobs:
         run: |                            # jobs.<job-id>.steps.run (multiline)
           echo $HOME_FOLDER
           echo $MY_ENV_VAR
-          echo $HOME_FOLDER MY_ENV_VAR
+          echo $HOME_FOLDER $MY_ENV_VAR
         
         
   compile:                                # jobs.<job-id>

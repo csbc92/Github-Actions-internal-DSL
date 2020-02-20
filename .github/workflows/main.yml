@@ -3,53 +3,62 @@ name: CI
 on: push
 
 jobs:
-  checkout:
-    name: "Checkout repository"
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
-  compile:
-    name: "Compile TANKS"
-    runs-on: [ubuntu-latest]
-    needs: [checkout]
-
-    steps:
-    - name: Pull Docker image
-      uses: docker://cfeicommon/maven-jdk8-fx:latest
-    - name: Checkout repo
-      uses: actions/checkout@v2
-    - name: Compile TANKS
-      working-directory: ./TANKS
-      run: mvn compile
+  checkout:                               # jobs.<job-id>
+    name: "Checkout repository"           # jobs.<job-id>.name
+    runs-on: [ubuntu-latest]              # jobs.<job-id>.runs-on
+    steps:                                # jobs.<job-id>.steps
+      - uses: actions/checkout@v2         # jobs.<job-id>.uses
+        
+        
+  compile:                                # jobs.<job-id>
+    name: "Compile TANKS"                 # jobs.<job-id>.name
+    runs-on: [ubuntu-latest]              # jobs.<job-id>.runs-on
+    needs: [checkout]                     # jobs.<job-id>.needs
+    steps:                                # jobs.<job-id>.steps
+      - uses: actions/checkout@v2         # jobs.<job-id>.uses
+      - name: Pull Docker image           # jobs.<job-id>.steps.name
+        uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
+        id: pulldockerimg                 # jobs.<job-id>.steps.id
+      - name: Checkout repo               # jobs.<job-id>.steps.name
+        uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
+      - name: Compile TANKS               # jobs.<job-id>.steps.name
+        working-directory: ./TANKS        # jobs.<job-id>.steps.working-directory
+        run: mvn compile                  # jobs.<job-id>.steps.run
   
-  unit-test:
-    name: "Unit test TANKS"
-    runs-on: [ubuntu-latest]
-    needs: [compile]
-    steps:
-      - name: Pull Docker image
+  unit-test:                            # jobs.<job-id>
+    name: "Unit test TANKS"             # jobs.<job-id>.name
+    runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
+    needs: [compile]                    # jobs.<job-id>.needs
+    steps:                              # jobs.<job-id>.steps
+      - uses: actions/checkout@v2       # jobs.<job-id>.uses
+      - name: Pull Docker image         # jobs.<job-id>.steps.name
         uses: docker://cfeicommon/maven-jdk8-fx:latest
-      - name: Execute unit tests
-        working-directory: ./TANKS
-        run: mvn verify
-  package:
-    name: "Package TANKS"
-    runs-on: [ubuntu-latest]
-    needs: [unit-test]
-    steps:
-      - name: Pull Docker Image
-        uses: docker://cfeicommon/maven-jdk8-fx:latest
-      - name: Package TANKS
-        working-directory: ./TANKS
-        run: mvn package
+      - name: Execute unit tests        # jobs.<job-id>.steps.name
+        working-directory: ./TANKS      # jobs.<job-id>.steps.working-directory
+        run: |                          # jobs.<job-id>.steps.run (multiline)
+          echo "Running mvn verify"
+          mvn verify
+  
+  package:                              # jobs.<job-id>
+    name: "Package TANKS"               # jobs.<job-id>.name
+    runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
+    needs: [unit-test]                  # jobs.<job-id>.needs
+    steps:                              # jobs.<job-id>.steps
+      - uses: actions/checkout@v2       # jobs.<job-id>.uses
+      - name: Pull Docker Image         # jobs.<job-id>.steps.name
+        uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
+      - name: Package TANKS             # jobs.<job-id>.steps.name
+        working-directory: ./TANKS      # jobs.<job-id>.steps.working-directory
+        run: mvn package                # jobs.<job-id>.steps.run
            
   install:
-    name: "Install TANKS"
-    runs-on: [ubuntu-latest]
-    needs: [package]
-    steps:
-      - name: Pull Docker Image
-        uses: docker://cfeicommon/maven-jdk8-fx:latest
-      - name: Package TANKS
-        working-directory: ./TANKS
-        run: mvn install
+    name: "Install TANKS"               # jobs.<job-id>.name
+    runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
+    needs: [package]                    # jobs.<job-id>.needs
+    steps:                              # jobs.<job-id>.steps
+      - uses: actions/checkout@v2         # jobs.<job-id>.uses
+      - name: Pull Docker Image         # jobs.<job-id>.steps.name
+        uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
+      - name: Package TANKS             # jobs.<job-id>.steps.name
+        working-directory: ./TANKS      # jobs.<job-id>.steps.working-directory
+        run: mvn install                # jobs.<job-id>.steps.run

@@ -6,8 +6,17 @@ jobs:
   checkout:                               # jobs.<job-id>
     name: "Checkout repository"           # jobs.<job-id>.name
     runs-on: [ubuntu-latest]              # jobs.<job-id>.runs-on
+    env:
+      HOME_FOLDER: "/home/ccl/"           # jobs.<job-id>.env
+      MY_ENV_VAR: "MY ENVIRONMENT VAR"    # jobs.<job-id>.env
     steps:                                # jobs.<job-id>.steps
-      - uses: actions/checkout@v2         # jobs.<job-id>.uses
+      - uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
+        name: Checkout action             # jobs.<job-id>.steps.name
+      - name: Print environment variables # jobs.<job-id>.steps.name
+        run: |                            # jobs.<job-id>.steps.run (multiline)
+          echo $HOME_FOLDER
+          echo $MY_ENV_VAR
+          echo $HOME_FOLDER MY_ENV_VAR
         
         
   compile:                                # jobs.<job-id>
@@ -15,7 +24,7 @@ jobs:
     runs-on: [ubuntu-latest]              # jobs.<job-id>.runs-on
     needs: [checkout]                     # jobs.<job-id>.needs
     steps:                                # jobs.<job-id>.steps
-      - uses: actions/checkout@v2         # jobs.<job-id>.uses
+      - uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
       - name: Pull Docker image           # jobs.<job-id>.steps.name
         uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
         id: pulldockerimg                 # jobs.<job-id>.steps.id
@@ -30,7 +39,7 @@ jobs:
     runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
     needs: [compile]                    # jobs.<job-id>.needs
     steps:                              # jobs.<job-id>.steps
-      - uses: actions/checkout@v2       # jobs.<job-id>.uses
+      - uses: actions/checkout@v2       # jobs.<job-id>.steps.uses
       - name: Pull Docker image         # jobs.<job-id>.steps.name
         uses: docker://cfeicommon/maven-jdk8-fx:latest
       - name: Execute unit tests        # jobs.<job-id>.steps.name
@@ -44,7 +53,7 @@ jobs:
     runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
     needs: [unit-test]                  # jobs.<job-id>.needs
     steps:                              # jobs.<job-id>.steps
-      - uses: actions/checkout@v2       # jobs.<job-id>.uses
+      - uses: actions/checkout@v2       # jobs.<job-id>.steps.uses
       - name: Pull Docker Image         # jobs.<job-id>.steps.name
         uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
       - name: Package TANKS             # jobs.<job-id>.steps.name
@@ -56,7 +65,7 @@ jobs:
     runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
     needs: [package]                    # jobs.<job-id>.needs
     steps:                              # jobs.<job-id>.steps
-      - uses: actions/checkout@v2         # jobs.<job-id>.uses
+      - uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
       - name: Pull Docker Image         # jobs.<job-id>.steps.name
         uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
       - name: Package TANKS             # jobs.<job-id>.steps.name

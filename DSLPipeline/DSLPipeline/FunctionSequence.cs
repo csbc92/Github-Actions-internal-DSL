@@ -7,7 +7,7 @@ using OperatingSystem = DSLPipeline.MetaModel.Configuration.OperatingSystem;
 
 namespace DSLPipeline
 {
-    public class Program2
+    public class FunctionSequence
     {
         public static void Main(string[] args)
         {

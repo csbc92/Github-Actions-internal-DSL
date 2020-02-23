@@ -1,4 +1,4 @@
-namespace DSLPipeline.MetaModel.Step
+namespace DSLPipeline.MetaModel.Steps
 {
     public abstract class Step
     {

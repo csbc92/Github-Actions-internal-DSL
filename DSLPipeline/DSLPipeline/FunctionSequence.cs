@@ -2,7 +2,7 @@ using System;
 using DSLPipeline.MetaModel;
 using DSLPipeline.MetaModel.Configuration;
 using DSLPipeline.MetaModel.Jobs;
-using DSLPipeline.MetaModel.Step;
+using DSLPipeline.MetaModel.Steps;
 using OperatingSystem = DSLPipeline.MetaModel.Configuration.OperatingSystem;
 
 namespace DSLPipeline
@@ -20,8 +20,8 @@ namespace DSLPipeline
             GlobalConfiguration globalConfig = new GlobalConfiguration(jobConfig);
             Step checkoutStep = new RemoteAction("checkout", "actions/checkout@v2");
             Step pullDockerImgStep = new RemoteAction("Pull Docker Image", "docker://cfeicommon/maven-jdk8-fx:latest");
-            globalConfig.addStep(checkoutStep);
-            globalConfig.addStep(pullDockerImgStep);
+            globalConfig.AddStep(checkoutStep);
+            globalConfig.AddStep(pullDockerImgStep);
             
             // Individual Steps
             ShellCommand compileStep = new ShellCommand("Compile TANKS", "mvn compile");
@@ -47,18 +47,18 @@ namespace DSLPipeline
             Job compileJob = new Job("compile","Compile TANKS", jobConfig, compileStep);
             
             Job unitTestJob = new Job("unit-test","Unit test TANKS", jobConfig, unitTestStep);
-            unitTestJob.addDependency(compileJob);
+            unitTestJob.AddDependency(compileJob);
             
             Job packageJob = new Job("package","Package TANKS", jobConfig, packageStep);
-            packageJob.addDependency(unitTestJob);
+            packageJob.AddDependency(unitTestJob);
             
             Job installJob = new Job("install","Install TANKS", jobConfig, installStep);
-            installJob.addDependency(packageJob);
+            installJob.AddDependency(packageJob);
             
-            pipe.addJob(compileJob);
-            pipe.addJob(unitTestJob);
-            pipe.addJob(packageJob);
-            pipe.addJob(installJob);
+            pipe.AddJob(compileJob);
+            pipe.AddJob(unitTestJob);
+            pipe.AddJob(packageJob);
+            pipe.AddJob(installJob);
 
             Console.WriteLine("Pipeline was created");
         }

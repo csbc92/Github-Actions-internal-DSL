@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using DSLPipeline.MetaModel.Steps;
 
 namespace DSLPipeline.MetaModel.Configuration
 {
@@ -17,11 +19,11 @@ namespace DSLPipeline.MetaModel.Configuration
     public class GlobalConfiguration
     {
         private JobConfiguration _jobConfiguration;
-        private LinkedList<Step.Step> _stepSequence;
+        private LinkedList<Step> _stepSequence;
 
         public GlobalConfiguration(JobConfiguration jobConfig)
         {
-            _stepSequence = new LinkedList<Step.Step>();
+            _stepSequence = new LinkedList<Step>();
             _jobConfiguration = jobConfig;
         }
         
@@ -29,9 +31,19 @@ namespace DSLPipeline.MetaModel.Configuration
         /// Adds a step that should be applied to all jobs in the pipeline
         /// </summary>
         /// <param name="step"></param>
-        public void addStep(Step.Step step)
+        public void AddStep(Step step)
         {
             _stepSequence.AddLast(step);
+        }
+
+        public JobConfiguration JobConfiguration
+        {
+            get { return _jobConfiguration; }
+        }
+
+        public Step[] StepSequence
+        {
+            get { return _stepSequence.ToArray(); }
         }
     }
 }

@@ -12,8 +12,8 @@ namespace DSLPipeline.MetaModel.Configuration
     public class OperatingSystem
     {
         public static OperatingSystem UbuntuLatest { get; } = new OperatingSystem(0, "ubuntu-latest");
-        public static OperatingSystem Ubuntu1804 { get; } = new OperatingSystem(0, "ubuntu-18.04");
-        public static OperatingSystem Ubuntu1604 { get; } = new OperatingSystem(0, "ubuntu-16.04");
+        public static OperatingSystem Ubuntu1804 { get; } = new OperatingSystem(1, "ubuntu-18.04");
+        public static OperatingSystem Ubuntu1604 { get; } = new OperatingSystem(2, "ubuntu-16.04");
 
         public int Value { get; private set; }
         public string Name { get; private set; }

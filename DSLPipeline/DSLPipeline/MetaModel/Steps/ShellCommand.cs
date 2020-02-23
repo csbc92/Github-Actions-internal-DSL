@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DSLPipeline.MetaModel.Step
+namespace DSLPipeline.MetaModel.Steps
 {
     /// <summary>
     /// The Shell Command is equal to the concept 'run' in Github Actions.

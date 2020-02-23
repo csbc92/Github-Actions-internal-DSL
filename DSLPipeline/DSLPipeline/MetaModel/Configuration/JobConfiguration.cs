@@ -5,7 +5,7 @@ namespace DSLPipeline.MetaModel.Configuration
     public class JobConfiguration
     {
         public OperatingSystem OperatingSystem { get; }
-        private Dictionary<string, string> _environmentVariables;
+        private IDictionary<string, string> _environmentVariables;
 
         public JobConfiguration(OperatingSystem os)
         {
@@ -25,6 +25,14 @@ namespace DSLPipeline.MetaModel.Configuration
             if (!_environmentVariables.TryAdd(key, value)) // Adds if not exists
             {
                 _environmentVariables[key] = value; // Overrides if exists
+            }
+        }
+
+        public IDictionary<string, string> EnvironmentVariables
+        {
+            get
+            {
+                return _environmentVariables;
             }
         }
     }

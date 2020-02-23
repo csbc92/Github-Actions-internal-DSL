@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DSLPipeline.MetaModel.Configuration;
+using DSLPipeline.MetaModel.Steps;
 
 namespace DSLPipeline.MetaModel.Jobs
 {
@@ -20,26 +21,26 @@ namespace DSLPipeline.MetaModel.Jobs
         private JobConfiguration _jobConfiguration;
 
         // Stored in a linked list, since steps are mostly appended first/last or accessed first/last or deleted 
-        private LinkedList<Step.Step> _steps;
+        private LinkedList<Step> _steps;
         
-        public string ID { get; }
+        public string Id { get; }
         public string Name { get; }
 
-        public Job(string id, string name, JobConfiguration jobConfiguration, params Step.Step[] steps)
+        public Job(string id, string name, JobConfiguration jobConfiguration, params Step[] steps)
         {
-            ID = name;
+            Id = id;
             Name = name;
             _dependencies = new HashSet<Job>();
             _jobConfiguration = jobConfiguration;
-            _steps = new LinkedList<Step.Step>();
+            _steps = new LinkedList<Step>();
 
             foreach (var step in steps)
             {
-                addStep(step);
+                AddStep(step);
             }
         }
 
-        public void addDependency(Job job)
+        public void AddDependency(Job job)
         {
             if (job.Equals(this))
                 throw new ArgumentException("A Job cannot depend on itself");
@@ -51,7 +52,7 @@ namespace DSLPipeline.MetaModel.Jobs
             _dependencies.Add(job);
         }
 
-        public void addStep(Step.Step step)
+        public void AddStep(Step step)
         {
             if (step == null)
                 throw new ArgumentNullException(nameof(step));
@@ -61,7 +62,7 @@ namespace DSLPipeline.MetaModel.Jobs
             _steps.AddLast(step);
         }
 
-        public void addEnvironmentVariable(string name, string value)
+        public void AddEnvironmentVariable(string name, string value)
         {
             _jobConfiguration.AddEnvVar(name, value);
         }
@@ -80,7 +81,7 @@ namespace DSLPipeline.MetaModel.Jobs
 
             Job other = (Job) obj;
 
-            return this.Name.Equals(other.Name) && this.ID.Equals(other.ID);
+            return this.Id.Equals(other.Id) || this.Name.Equals(other.Name);
         }
 
         public override int GetHashCode()
@@ -88,7 +89,7 @@ namespace DSLPipeline.MetaModel.Jobs
             int result = 17;
 
             result = result * 31 + this.Name.GetHashCode();
-            result = result * 31 + this.ID.GetHashCode();
+            result = result * 31 + this.Id.GetHashCode();
 
             return result;
         }

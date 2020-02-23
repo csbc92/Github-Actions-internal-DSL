@@ -9,7 +9,7 @@ namespace DSLPipeline.MetaModel
     {
         public string Name { get; }
 
-        private LinkedList<Job> _jobSequence;
+        private IList<Job> _jobSequence;
 
         private GlobalConfiguration _globalConfiguration;
         private HashSet<TriggerType> _triggerTypes;
@@ -17,9 +17,11 @@ namespace DSLPipeline.MetaModel
         public Pipeline(string name, TriggerType triggerType)
         {
             Name = name;
-            _jobSequence = new LinkedList<Job>();
+            _jobSequence = new List<Job>();
             _triggerTypes = new HashSet<TriggerType>();
-            _triggerTypes.Add(triggerType);
+            
+            if (triggerType != null)
+                _triggerTypes.Add(triggerType);
 
         }
 
@@ -28,12 +30,12 @@ namespace DSLPipeline.MetaModel
         /// unless overridden.
         /// </summary>
         /// <param name="globalConfig"></param>
-        public void addGlobalConfiguration(GlobalConfiguration globalConfig)
+        public void AddGlobalConfiguration(GlobalConfiguration globalConfig)
         {
             _globalConfiguration = globalConfig;
         }
         
-        public void addJob(Job job)
+        public void AddJob(Job job)
         {
             if (job == null)
                 throw new ArgumentNullException(nameof(job));
@@ -41,10 +43,10 @@ namespace DSLPipeline.MetaModel
             if (_jobSequence.Contains(job))
                 throw new ArgumentException("Job already added");
 
-            _jobSequence.AddLast(job);
+            _jobSequence.Add(job);
         }
 
-        public void addTrigger(TriggerType triggerType)
+        public void AddTrigger(TriggerType triggerType)
         {
             if (_triggerTypes.Contains(triggerType))
                 throw new ArgumentException("The trigger type is already added");
@@ -61,11 +63,11 @@ namespace DSLPipeline.MetaModel
         /// </summary>
         /// <param name="id">The id of the job</param>
         /// <returns>Return the Job or null if the job with the id does not exist</returns>
-        public Job getJob(string id)
+        public Job GetJob(string id)
         {
             foreach (var job in _jobSequence)
             {
-                if (job.ID.Equals(id))
+                if (job.Id.Equals(id))
                 {
                     return job;
                 }

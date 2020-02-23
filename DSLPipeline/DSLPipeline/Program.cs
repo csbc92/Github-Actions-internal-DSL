@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DSLPipeline.MetaModel;
 
 namespace DSLPipeline
 {
@@ -8,7 +9,6 @@ namespace DSLPipeline
         static void Main2(string[] args)
         {
             HashSetExample();
-            
         }
 
         public static void HashSetExample()

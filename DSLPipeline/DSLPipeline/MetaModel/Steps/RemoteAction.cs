@@ -1,4 +1,4 @@
-namespace DSLPipeline.MetaModel.Step
+namespace DSLPipeline.MetaModel.Steps
 {
      /// <summary>
      /// The Remote Action is equal to the concept 'uses' which contains an Action in Github Actions.

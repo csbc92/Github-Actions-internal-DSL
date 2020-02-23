@@ -14,8 +14,8 @@ namespace DSLPipeline.MetaModel
         public static TriggerType Push { get; } = new TriggerType(0, "push");
         public static TriggerType PullRequest { get; } = new TriggerType(1, "pull_request");
 
-        public int Value { get; private set; }
-        public string Name { get; private set; }
+        public int Value { get; }
+        public string Name { get; }
 
         public TriggerType(int value, string name)
         {

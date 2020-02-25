@@ -1,7 +1,7 @@
 using DSLPipeline.MetaModel.Configuration;
 using DSLPipeline.MetaModel.Jobs;
 
-namespace DSLPipeline.MetaModel.Builders.v2.Interfaces
+namespace DSLPipeline.Builders.v2.Interfaces
 {
     /*
      * Valid Job constructs

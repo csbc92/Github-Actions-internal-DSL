@@ -1,6 +1,6 @@
 using DSLPipeline.MetaModel.Configuration;
 
-namespace DSLPipeline.MetaModel.Builders.v2.Interfaces
+namespace DSLPipeline.Builders.v2.Interfaces
 {
     /*
      * Valid Global constructs

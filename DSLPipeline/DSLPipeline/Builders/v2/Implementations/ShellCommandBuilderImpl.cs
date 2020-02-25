@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using DSLPipeline.MetaModel.Builders.v2.Interfaces;
+using DSLPipeline.Builders.v2.Interfaces;
 using DSLPipeline.MetaModel.Steps;
 
-namespace DSLPipeline.MetaModel.Builders.v2.Implementations
+namespace DSLPipeline.Builders.v2.Implementations
 {
     public class ShellCommandBuilderImpl : IShellCommandBuilder
     {

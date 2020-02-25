@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DSLPipeline.MetaModel.Builders.v2.Interfaces;
+using DSLPipeline.Builders.v2.Interfaces;
 using DSLPipeline.MetaModel.Configuration;
 using DSLPipeline.MetaModel.Jobs;
 using DSLPipeline.MetaModel.Steps;
 using OperatingSystem = DSLPipeline.MetaModel.Configuration.OperatingSystem;
 
-namespace DSLPipeline.MetaModel.Builders.v2.Implementations
+namespace DSLPipeline.Builders.v2.Implementations
 {
     public class JobBuilderImpl : IJobBuilder
     {

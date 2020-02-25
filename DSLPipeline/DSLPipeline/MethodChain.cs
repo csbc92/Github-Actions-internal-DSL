@@ -1,5 +1,5 @@
 using DSLPipeline.MetaModel;
-using DSLPipeline.MetaModel.Builders.v1;
+using DSLPipeline.Builders.v1;
 using DSLPipeline.MetaModel.Configuration;
 
 namespace DSLPipeline

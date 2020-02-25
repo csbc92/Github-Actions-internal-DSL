@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using DSLPipeline.MetaModel.Builders.v2.Interfaces;
+using DSLPipeline.MetaModel;
+using DSLPipeline.Builders.v2.Interfaces;
 using DSLPipeline.MetaModel.Configuration;
 using DSLPipeline.MetaModel.Jobs;
 
-namespace DSLPipeline.MetaModel.Builders.v2.Implementations
+namespace DSLPipeline.Builders.v2.Implementations
 {
     public class PipelineBuilderImpl : IPipelineBuilder
     {
@@ -18,17 +19,21 @@ namespace DSLPipeline.MetaModel.Builders.v2.Implementations
         // Jobs
         private IDictionary<string, Job> _jobsContext; // key is jobID
 
+        public PipelineBuilderImpl()
+        {
+            // Context variables
+            _jobsContext = new Dictionary<string, Job>();
+
+            // Initialize builders
+            _globalConfigBuilder = new GlobalConfigurationBuilderImpl(this);
+        }
+        
         public IPipelineBuilder Pipeline(string name)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
             
-            // Context variables
-            _jobsContext = new Dictionary<string, Job>();
             _pipeline = new Pipeline(name, null);
-            
-            // Initialize builders
-            _globalConfigBuilder = new GlobalConfigurationBuilderImpl(this);
 
             return this;
         }

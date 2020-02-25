@@ -1,6 +1,6 @@
 using DSLPipeline.MetaModel;
-using DSLPipeline.MetaModel.Builders.v2.Interfaces;
-using DSLPipeline.MetaModel.Builders.v2.Implementations;
+using DSLPipeline.Builders.v2.Interfaces;
+using DSLPipeline.Builders.v2.Implementations;
 using DSLPipeline.MetaModel.Configuration;
 using NUnit.Framework;
 
@@ -60,14 +60,13 @@ namespace DSLTests
             builder.Pipeline("CI")
                 .TriggerOn(TriggerType.Push)
                 
-                // BUG: The builder crashes if there are no globals added
                 .AddGlobals().
-                RunsOn(OperatingSystem.UbuntuLatest).
-                SetEnvVar("MY_ENV_VAR", "HELLO WORLD!").
-                AddStep("Default Checkout step").
-                AsAction().
-                Execute("actions/checkout@v2")
-                
+                    RunsOn(OperatingSystem.UbuntuLatest).
+                    SetEnvVar("MY_ENV_VAR", "HELLO WORLD!").
+                    AddStep("Default Checkout step").
+                        AsAction().
+                        Execute("actions/checkout@v2")
+
                 .AddJob("compile")
                     .RunsOn(OperatingSystem.UbuntuLatest)
                     .AddStep("Checkout repo")
@@ -80,6 +79,7 @@ namespace DSLTests
                         .AsShell()
                             .Execute("mvn compile")
                             .InDirectory(tanksDir)
+                
                 .AddJob("unit-test")
                     .RunsOn(OperatingSystem.UbuntuLatest)
                     .DependsOn("compile")
@@ -94,6 +94,7 @@ namespace DSLTests
                             .Execute("Running mvn verify")
                             .Execute("mvn verify")
                             .InDirectory(tanksDir)
+                
                 .AddJob("package")
                     .RunsOn(OperatingSystem.UbuntuLatest)
                     .DependsOn("unit-test")
@@ -107,6 +108,7 @@ namespace DSLTests
                         .AsShell()
                             .Execute("mvn package")
                             .InDirectory(tanksDir)
+                
                 .AddJob("install")
                     .RunsOn(OperatingSystem.UbuntuLatest)
                     .DependsOn("package")
@@ -122,7 +124,7 @@ namespace DSLTests
                             .InDirectory(tanksDir);
             
             builder.Build();
-            Pipeline p =builder.Collect();
+            Pipeline p = builder.Collect();
 
         }
     }

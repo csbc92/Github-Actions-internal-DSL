@@ -1,6 +1,6 @@
 using DSLPipeline.MetaModel;
 using DSLPipeline.MetaModel.Configuration;
-using DSLPipeline.MetaModel.Builders.v2.Interfaces;
+using DSLPipeline.Builders.v2.Interfaces;
 
 namespace DSLPipeline
 {

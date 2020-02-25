@@ -1,6 +1,7 @@
+using DSLPipeline.MetaModel;
 using DSLPipeline.MetaModel.Configuration;
 
-namespace DSLPipeline.MetaModel.Builders.v1
+namespace DSLPipeline.Builders.v1
 {
     
     /// <summary>

@@ -1,6 +1,7 @@
+using DSLPipeline.MetaModel;
 using DSLPipeline.MetaModel.Jobs;
 
-namespace DSLPipeline.MetaModel.Builders.v2.Interfaces
+namespace DSLPipeline.Builders.v2.Interfaces
 {
     /*
      * Valid pipeline constructs

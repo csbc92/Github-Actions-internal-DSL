@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using DSLPipeline.MetaModel.Builders.v2.Interfaces;
+using DSLPipeline.Builders.v2.Interfaces;
 using DSLPipeline.MetaModel.Configuration;
 using DSLPipeline.MetaModel.Steps;
 
-namespace DSLPipeline.MetaModel.Builders.v2.Implementations
+namespace DSLPipeline.Builders.v2.Implementations
 {
     public class GlobalConfigurationBuilderImpl : IGlobalConfigBuilder
     {
@@ -62,10 +62,13 @@ namespace DSLPipeline.MetaModel.Builders.v2.Implementations
 
         private void AddStepsToGlobalConfig()
         {
-            _stepsBuilder.Build();
-            foreach (Step s in _stepsBuilder.Collect())
+            if (_stepsBuilder != null)
             {
-                _globalConfiguration.AddStep(s);
+                _stepsBuilder.Build();
+                foreach (Step s in _stepsBuilder.Collect())
+                {
+                    _globalConfiguration.AddStep(s);
+                }
             }
         }
 

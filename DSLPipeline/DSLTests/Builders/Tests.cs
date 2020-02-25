@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using DSLPipeline.MetaModel.Builders.v2;
-using DSLPipeline.MetaModel.Builders.v2.Implementations;
-using DSLPipeline.MetaModel.Builders.v2.Interfaces;
+using DSLPipeline.Builders.v2;
+using DSLPipeline.Builders.v2.Implementations;
+using DSLPipeline.Builders.v2.Interfaces;
 using DSLPipeline.MetaModel.Configuration;
 using DSLPipeline.MetaModel.Steps;
 

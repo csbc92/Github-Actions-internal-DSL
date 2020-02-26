@@ -67,21 +67,21 @@ namespace DSLTests.CodeGenTests
                     SetEnvVar("MY_ENV_VAR", "HELLO WORLD!").
                     AddStep("Default Checkout step").
                         AsAction().
-                            SetName("Checkout").
                             Execute("actions/checkout@v2").
                     AddStep("Default clean step").
                         AsShell().
-                            SetName("Maven Clean").
                             Execute("echo \"My Global Job\"").
                             Execute("echo \"Value of global env var: \" $MY_ENV_VAR").
                             Execute("mvn clean").
                             InDirectory(workDir).
                 AddJob("compile").
+                    SetName("Compile").
                     AddStep("Compile Step").
                         AsShell().
                             Execute("mvn compile").
                             InDirectory(workDir).
                 AddJob("unit-test").
+                    SetName("Unit test").
                     RunsOn(OperatingSystem.Ubuntu1604).
                     DependsOn("compile").
                     AddStep("Unit Test Step").
@@ -89,6 +89,7 @@ namespace DSLTests.CodeGenTests
                             Execute("mvn verify").
                             InDirectory(workDir).
                 AddJob("package").
+                    SetName("Package").
                     RunsOn(OperatingSystem.Ubuntu1804).
                     DependsOn("unit-test").
                     SetEnvVar("MY_ENV_VAR", "HELLO FYN").
@@ -98,6 +99,13 @@ namespace DSLTests.CodeGenTests
                             Execute("mvn package").
                             Execute("echo \"Value of overridden global env var: \" $MY_ENV_VAR").
                             Execute("echo \"Value of local env var: \" $LOCAL_VAR").
+                            InDirectory(workDir).
+                AddJob("install").
+                    SetName("Install").
+                    DependsOn("package").
+                    AddStep("Maven install").
+                        AsShell().
+                            Execute("mvn install").
                             InDirectory(workDir);
             
             builder.Build();
@@ -106,6 +114,12 @@ namespace DSLTests.CodeGenTests
             PipelineCodeGen codeGen = new PipelineCodeGen(_pipeline, 2);
             string YAML = codeGen.Generate();
             Console.WriteLine(YAML);
+            Console.WriteLine("##############################################");
+            Console.WriteLine();
+            codeGen.Indent = 4;
+            YAML = codeGen.Generate();
+            Console.WriteLine(YAML);
+
         }
     }
 }

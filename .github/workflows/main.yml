@@ -1,73 +1,38 @@
-name: CI
+name: myPipeline
 
-on: push
+on: [push]
 
 jobs:
-  checkout:                               # jobs.<job-id>
-    name: "Checkout repository"           # jobs.<job-id>.name
-    runs-on: [ubuntu-latest]              # jobs.<job-id>.runs-on
-    env:
-      HOME_FOLDER: "/home/ccl/"           # jobs.<job-id>.env
-      MY_ENV_VAR: "MY ENVIRONMENT VAR"    # jobs.<job-id>.env
-    steps:                                # jobs.<job-id>.steps
-      - uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
-        name: Checkout action             # jobs.<job-id>.steps.name
-      - name: Print environment variables # jobs.<job-id>.steps.name
-        run: |                            # jobs.<job-id>.steps.run (multiline)
-          echo $HOME_FOLDER
-          echo $MY_ENV_VAR
-          echo $HOME_FOLDER $MY_ENV_VAR
-        
-        
-  compile:                                # jobs.<job-id>
-    name: "Compile TANKS"                 # jobs.<job-id>.name
-    runs-on: [ubuntu-latest]              # jobs.<job-id>.runs-on
-    needs: [checkout]                     # jobs.<job-id>.needs
-    steps:                                # jobs.<job-id>.steps
-      - uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
-      - name: Pull Docker image           # jobs.<job-id>.steps.name
-        uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
-        id: pulldockerimg                 # jobs.<job-id>.steps.id
-      - name: Checkout repo               # jobs.<job-id>.steps.name
-        uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
-      - name: Compile TANKS               # jobs.<job-id>.steps.name
-        working-directory: ./TANKS        # jobs.<job-id>.steps.working-directory
-        run: mvn compile                  # jobs.<job-id>.steps.run
-  
-  unit-test:                            # jobs.<job-id>
-    name: "Unit test TANKS"             # jobs.<job-id>.name
-    runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
-    needs: [compile]                    # jobs.<job-id>.needs
-    steps:                              # jobs.<job-id>.steps
-      - uses: actions/checkout@v2       # jobs.<job-id>.steps.uses
-      - name: Pull Docker image         # jobs.<job-id>.steps.name
-        uses: docker://cfeicommon/maven-jdk8-fx:latest
-      - name: Execute unit tests        # jobs.<job-id>.steps.name
-        working-directory: ./TANKS      # jobs.<job-id>.steps.working-directory
-        run: |                          # jobs.<job-id>.steps.run (multiline)
-          echo "Running mvn verify"
-          mvn verify
-  
-  package:                              # jobs.<job-id>
-    name: "Package TANKS"               # jobs.<job-id>.name
-    runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
-    needs: [unit-test]                  # jobs.<job-id>.needs
-    steps:                              # jobs.<job-id>.steps
-      - uses: actions/checkout@v2       # jobs.<job-id>.steps.uses
-      - name: Pull Docker Image         # jobs.<job-id>.steps.name
-        uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
-      - name: Package TANKS             # jobs.<job-id>.steps.name
-        working-directory: ./TANKS      # jobs.<job-id>.steps.working-directory
-        run: mvn package                # jobs.<job-id>.steps.run
-           
-  install:
-    name: "Install TANKS"               # jobs.<job-id>.name
-    runs-on: [ubuntu-latest]            # jobs.<job-id>.runs-on
-    needs: [package]                    # jobs.<job-id>.needs
-    steps:                              # jobs.<job-id>.steps
-      - uses: actions/checkout@v2         # jobs.<job-id>.steps.uses
-      - name: Pull Docker Image         # jobs.<job-id>.steps.name
-        uses: docker://cfeicommon/maven-jdk8-fx:latest  # jobs.<job-id>.steps.uses
-      - name: Package TANKS             # jobs.<job-id>.steps.name
-        working-directory: ./TANKS      # jobs.<job-id>.steps.working-directory
-        run: mvn install                # jobs.<job-id>.steps.run
+
+  compile:
+    name: 877dbf32-a468-429f-82f0-d82727c11394
+    runs-on: [ubuntu-latest]
+    env: 
+      MY_ENV_VAR: "HELLO WORLD!"
+    steps:
+      - uses: actions/checkout@v2
+        name: Default Checkout step
+      - name: Default clean step
+        working-directory: ./TANKS
+        run: |
+          echo "My Global Job"
+          mvn clean
+      - name: Compile Step
+        working-directory: ./TANKS
+        run: mvn compile
+  unittest:
+    name: 4d4603ff-6751-444c-9c91-1f9be1f72229
+    runs-on: [ubuntu-latest]
+    env: 
+      MY_ENV_VAR: "HELLO WORLD!"
+    steps:
+      - uses: actions/checkout@v2
+        name: Default Checkout step
+      - name: Default clean step
+        working-directory: ./TANKS
+        run: |
+          echo "My Global Job"
+          mvn clean
+      - name: Unit Test Step
+        working-directory: ./TANKS
+        run: mvn verify

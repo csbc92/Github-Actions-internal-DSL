@@ -363,3 +363,6 @@ jobs:
         working-directory: ./TANKS
         run: mvn verify
 ```
+
+# Metal model class diagram UML
+![alt text](github-action-metamodel.png)

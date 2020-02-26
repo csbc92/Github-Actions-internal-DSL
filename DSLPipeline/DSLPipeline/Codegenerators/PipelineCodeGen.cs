@@ -21,13 +21,19 @@ namespace DSLPipeline.Codegenerators
         /// </summary>
         /// <param name="pipeline">The model to generate</param>
         /// <param name="indent">The space indentations to use e.g. 2 or 4, ..</param>
-        public PipelineCodeGen(Pipeline pipeline, int indent)
+        public PipelineCodeGen(Pipeline pipeline, int indent = 2)
         {
             _pipeline = pipeline;
             _indent = indent;
             _sb = new StringBuilder();
 
             PrepareModel();
+        }
+        
+        public int Indent
+        {
+            get => _indent;
+            set => _indent = value;
         }
 
         private void PrepareModel()
@@ -73,6 +79,8 @@ namespace DSLPipeline.Codegenerators
 
         public string Generate()
         {
+            _sb.Clear();
+            
             GeneratePipelineName();
             AppendNewLine(2);
             GenerateTriggers();
@@ -82,7 +90,7 @@ namespace DSLPipeline.Codegenerators
             return _sb.ToString();
         }
 
-        private void Indent(int times = 1)
+        private void AddIndent(int times = 1)
         {
             for (int i = 0; i < times; i++)
                 _sb.Append(_indentChar, _indent);
@@ -124,15 +132,15 @@ namespace DSLPipeline.Codegenerators
             foreach (var job in _pipeline.Jobs)
             {
                 AppendNewLine(1);
-                Indent();
+                AddIndent();
                 _sb.Append(job.Id).Append(":");
                 AppendNewLine(1);
                 
-                Indent(2);
+                AddIndent(2);
                 _sb.Append("name: ").Append(job.Name);
                 
                 AppendNewLine(1);
-                Indent(2);
+                AddIndent(2);
                 _sb.Append("runs-on: [").Append(job.JobConfiguration.OperatingSystem.Name).Append("]");
 
                 GenerateDependencies(job);
@@ -148,7 +156,7 @@ namespace DSLPipeline.Codegenerators
             if (dependencies != null && dependencies.Length > 0)
             {
                 AppendNewLine(1);
-                Indent(2);
+                AddIndent(2);
                 _sb.Append("needs: [");
 
                 for (int i = 0; i < dependencies.Length; i++)
@@ -172,13 +180,13 @@ namespace DSLPipeline.Codegenerators
             if (envVars != null)
             {
                 AppendNewLine(1);
-                Indent(2);
+                AddIndent(2);
                 _sb.Append("env: ");
 
                 foreach (var keyValPair in envVars)
                 {
                     AppendNewLine(1);
-                    Indent(3);
+                    AddIndent(3);
                     _sb.Append(keyValPair.Key)
                         .Append(": ").Append("\"")
                         .Append(keyValPair.Value)
@@ -192,13 +200,13 @@ namespace DSLPipeline.Codegenerators
             if (job.Steps != null)
             {
                 AppendNewLine(1);
-                Indent(2);
+                AddIndent(2);
                 _sb.Append("steps:");
 
                 foreach (var step in job.Steps)
                 {
                     AppendNewLine(1);
-                    Indent(3);
+                    AddIndent(3);
                     _sb.Append("- ");
 
                     if (step is RemoteAction)
@@ -218,7 +226,7 @@ namespace DSLPipeline.Codegenerators
         {
             _sb.Append("uses: ").Append(remoteAction.Path);
             AppendNewLine(1);
-            Indent(4);
+            AddIndent(4);
             _sb.Append("name: ").Append(remoteAction.Name);
         }
         
@@ -226,7 +234,7 @@ namespace DSLPipeline.Codegenerators
         {
             _sb.Append("name: ").Append(shellCmd.Name);
             AppendNewLine(1);
-            Indent(4);
+            AddIndent(4);
                         
             string workDir = shellCmd.WorkDirectory;
             if (workDir != null)
@@ -238,7 +246,7 @@ namespace DSLPipeline.Codegenerators
             if (cmdLines != null)
             {
                 AppendNewLine(1);
-                Indent(4);
+                AddIndent(4);
                 _sb.Append("run: ");
                             
                 if (cmdLines.Length > 1) // Multi-line case
@@ -248,7 +256,7 @@ namespace DSLPipeline.Codegenerators
                     for (int i = 0; i < cmdLines.Length; i++)
                     {
                         AppendNewLine(1);
-                        Indent(5);
+                        AddIndent(5);
                         _sb.Append(cmdLines[i]);
                     }
                 }

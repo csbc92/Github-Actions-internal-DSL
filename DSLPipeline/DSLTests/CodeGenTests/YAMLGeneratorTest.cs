@@ -51,6 +51,7 @@ namespace DSLTests.CodeGenTests
             
             PipelineCodeGen codeGen = new PipelineCodeGen(_pipeline, 2);
             string YAML = codeGen.Generate();
+            Console.WriteLine(YAML);
         }
         
                 [Test]

@@ -1,5 +1,7 @@
-# MDSD-internal-DSL
+# Github Actions internal DSL
 This repository contains an internal DSL (written in C#) for creating pipelines with Github Actions (https://github.com/features/actions).
+
+The development of the internal DSL was part of an assignment for the Master's course, Model-Driven Software Development, in the Software Engineering program at University of Southern Denmark.
 
 
 # Purpose of the DSL

@@ -26,6 +26,12 @@ namespace DSLPipeline.MetaModel.Jobs
         public string Id { get; }
         public string Name { get; }
 
+        public JobConfiguration JobConfiguration => _jobConfiguration;
+
+        public ISet<Job> Dependencies => new HashSet<Job>(_dependencies);
+        
+        public ICollection<Step> Steps => new LinkedList<Step>(_steps);
+
         public Job(string id, string name, JobConfiguration jobConfiguration, params Step[] steps)
         {
             Id = id;
@@ -52,14 +58,29 @@ namespace DSLPipeline.MetaModel.Jobs
             _dependencies.Add(job);
         }
 
-        public void AddStep(Step step)
+        /// <summary>
+        /// Adds the given step to the job. The step can be appended or prepended. Default option is to append.
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="append">True if append, False if prepend.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public void AddStep(Step step, bool append = true)
         {
             if (step == null)
                 throw new ArgumentNullException(nameof(step));
             if (_steps.Contains(step))
                 throw new ArgumentException("The step is already added to the sequence");
 
-            _steps.AddLast(step);
+            if (append)
+            {
+                _steps.AddLast(step);
+            }
+            else // Prepend
+            {
+                _steps.AddFirst(step);
+            }
+            
         }
 
         public void AddEnvironmentVariable(string name, string value)

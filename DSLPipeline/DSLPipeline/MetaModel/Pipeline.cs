@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DSLPipeline.MetaModel.Configuration;
 using DSLPipeline.MetaModel.Jobs;
 
@@ -56,7 +57,13 @@ namespace DSLPipeline.MetaModel
 
             _triggerTypes.Add(triggerType);
         }
+
+        public HashSet<TriggerType> TriggerTypes => new HashSet<TriggerType>(_triggerTypes);
         
+        public IList<Job> Jobs => new List<Job>(_jobSequence);
+
+        public GlobalConfiguration GlobalConfiguration => _globalConfiguration;
+
 
         /// <summary>
         /// Returns the job with the specified id.

@@ -5,34 +5,59 @@ on: [push]
 jobs:
 
   compile:
-    name: 877dbf32-a468-429f-82f0-d82727c11394
+    name: 32519a68-e496-4e6d-bf50-762f58ccb14a
     runs-on: [ubuntu-latest]
     env: 
       MY_ENV_VAR: "HELLO WORLD!"
     steps:
       - uses: actions/checkout@v2
-        name: Default Checkout step
-      - name: Default clean step
+        name: Checkout
+      - name: Maven Clean
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
+          echo "Value of global env var: " $MY_ENV_VAR
           mvn clean
       - name: Compile Step
         working-directory: ./TANKS
         run: mvn compile
-  unittest:
-    name: 4d4603ff-6751-444c-9c91-1f9be1f72229
-    runs-on: [ubuntu-latest]
+  unit-test:
+    name: 1e89fdc3-8bf2-4edd-b0ee-f8dba30301f4
+    runs-on: [ubuntu-16.04]
+    needs: [compile]
     env: 
       MY_ENV_VAR: "HELLO WORLD!"
     steps:
       - uses: actions/checkout@v2
-        name: Default Checkout step
-      - name: Default clean step
+        name: Checkout
+      - name: Maven Clean
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
+          echo "Value of global env var: " $MY_ENV_VAR
           mvn clean
       - name: Unit Test Step
         working-directory: ./TANKS
         run: mvn verify
+  package:
+    name: da269937-0413-408c-92e2-f6f80c0bc9d6
+    runs-on: [ubuntu-18.04]
+    needs: [unit-test]
+    env: 
+      MY_ENV_VAR: "HELLO FYN"
+      LOCAL_VAR: "HELLO ODENSE"
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout
+      - name: Maven Clean
+        working-directory: ./TANKS
+        run: |
+          echo "My Global Job"
+          echo "Value of global env var: " $MY_ENV_VAR
+          mvn clean
+      - name: Maven package
+        working-directory: ./TANKS
+        run: |
+          mvn package
+          echo "Value of overridden global env var: " $MY_ENV_VAR
+          echo "Value of local env var: " $LOCAL_VAR

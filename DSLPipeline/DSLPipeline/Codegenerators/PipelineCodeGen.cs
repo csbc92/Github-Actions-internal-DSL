@@ -226,7 +226,8 @@ namespace DSLPipeline.Codegenerators
         {
             _sb.Append("uses: ").Append(remoteAction.Path);
             AppendNewLine(1);
-            AddIndent(4);
+            AddIndent(3);
+            _sb.Append("  "); // This append is static 2 spaces
             _sb.Append("name: ").Append(remoteAction.Name);
         }
         
@@ -234,7 +235,8 @@ namespace DSLPipeline.Codegenerators
         {
             _sb.Append("name: ").Append(shellCmd.Name);
             AppendNewLine(1);
-            AddIndent(4);
+            AddIndent(3);
+            _sb.Append("  ");  // This append is static 2 spaces
                         
             string workDir = shellCmd.WorkDirectory;
             if (workDir != null)
@@ -246,7 +248,8 @@ namespace DSLPipeline.Codegenerators
             if (cmdLines != null)
             {
                 AppendNewLine(1);
-                AddIndent(4);
+                AddIndent(3);
+                _sb.Append("  ");  // This append is static 2 spaces
                 _sb.Append("run: ");
                             
                 if (cmdLines.Length > 1) // Multi-line case
@@ -256,7 +259,8 @@ namespace DSLPipeline.Codegenerators
                     for (int i = 0; i < cmdLines.Length; i++)
                     {
                         AppendNewLine(1);
-                        AddIndent(5);
+                        AddIndent(4);
+                        _sb.Append("  ");  // This append is static 2 spaces
                         _sb.Append(cmdLines[i]);
                     }
                 }

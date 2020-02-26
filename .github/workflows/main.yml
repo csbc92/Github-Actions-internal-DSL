@@ -5,14 +5,14 @@ on: [push]
 jobs:
 
   compile:
-    name: 32519a68-e496-4e6d-bf50-762f58ccb14a
+    name: Compile
     runs-on: [ubuntu-latest]
     env: 
       MY_ENV_VAR: "HELLO WORLD!"
     steps:
       - uses: actions/checkout@v2
-        name: Checkout
-      - name: Maven Clean
+        name: Default Checkout step
+      - name: Default clean step
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
@@ -22,15 +22,15 @@ jobs:
         working-directory: ./TANKS
         run: mvn compile
   unit-test:
-    name: 1e89fdc3-8bf2-4edd-b0ee-f8dba30301f4
+    name: Unit test
     runs-on: [ubuntu-16.04]
     needs: [compile]
     env: 
       MY_ENV_VAR: "HELLO WORLD!"
     steps:
       - uses: actions/checkout@v2
-        name: Checkout
-      - name: Maven Clean
+        name: Default Checkout step
+      - name: Default clean step
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
@@ -40,7 +40,7 @@ jobs:
         working-directory: ./TANKS
         run: mvn verify
   package:
-    name: da269937-0413-408c-92e2-f6f80c0bc9d6
+    name: Package
     runs-on: [ubuntu-18.04]
     needs: [unit-test]
     env: 
@@ -48,8 +48,8 @@ jobs:
       LOCAL_VAR: "HELLO ODENSE"
     steps:
       - uses: actions/checkout@v2
-        name: Checkout
-      - name: Maven Clean
+        name: Default Checkout step
+      - name: Default clean step
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
@@ -61,3 +61,21 @@ jobs:
           mvn package
           echo "Value of overridden global env var: " $MY_ENV_VAR
           echo "Value of local env var: " $LOCAL_VAR
+  install:
+    name: Install
+    runs-on: [ubuntu-latest]
+    needs: [package]
+    env: 
+      MY_ENV_VAR: "HELLO WORLD!"
+    steps:
+      - uses: actions/checkout@v2
+        name: Default Checkout step
+      - name: Default clean step
+        working-directory: ./TANKS
+        run: |
+          echo "My Global Job"
+          echo "Value of global env var: " $MY_ENV_VAR
+          mvn clean
+      - name: Maven install
+        working-directory: ./TANKS
+        run: mvn install

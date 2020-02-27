@@ -29,9 +29,9 @@ The DSL builds a meta model instance of a pipeline and uses this instance to gen
 It is important to notice that there are limitations to the DSL. This means that the DSL does not (yet) implement the full specification of the Github actions API. In an ideal world the meta model should be abstracted to a level where the meta model is independent of the underlying platform. This remains an usolved challenge because there is no general agreement of which concepts that constitutes an automated pipeline. Different platforms may share the general idea of automated pipelines, but they do not share the naming of the concepts. Hence, the development of an abstracted meta model would require knowledge from multiple domain experts.
 
 # Demonstration
-This repository contains a game named TANKS written in Java. The process of building this game can be automated with a pipeline for Github actions.
+The Github repository https://github.com/csbc92/TANKS contains a game written in Java. The process of building this game can be automated with a pipeline for Github actions.
 
-The programs written in the internal DSL should be self-explanatory to users that have a background in Computer Science, Software Engineering or similar. It is recommended to have some knowledge of C#, Maven and \*nix systems
+The programs that are written in the internal DSL should be self-explanatory to users that have a background in Computer Science, Software Engineering or similar. It is recommended to have some knowledge of Continuous Integration, C#, Maven and \*nix systems.
 
 ## Example 1
 Constructs a pipeline that looks like this: Compile -> Unit test -> Package -> Install

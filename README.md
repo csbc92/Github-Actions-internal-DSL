@@ -1,5 +1,8 @@
 # Github Actions internal DSL
-This repository contains an internal DSL (written in C#) for creating pipelines with Github Actions (https://github.com/features/actions).
+This repository contains an internal DSL (written in C#) for creating pipelines with Github Actions
+
+See more: https://github.com/features/actions
+YAML specification: https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
 The development of the internal DSL was part of an assignment for the Master's course, Model-Driven Software Development, in the Software Engineering program at University of Southern Denmark.
 

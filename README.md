@@ -9,31 +9,32 @@ The development of the internal DSL was part of an assignment for the Master's c
 
 
 # Purpose of the DSL
-This internal DSL aims to make it easier to make Github Action pipelines and to enhance on the features.
+This internal DSL aims to make it easier to compose Github Action pipelines and to enhance on the available features.
 
-Added features which is not available in Github actions:
+Added features which is not available in Github Actions:
 
-* Global Steps - makes it possible to create steps that are prepended to all defined jobs instead of repeating trivial steps for each job (for instance 'checkout').
+* Global Steps - allows to create steps that are prepended to all defined jobs instead of repeating trivial steps for each job (for instance 'checkout').
 
-* Global operating system - makes it possible to make all jobs use a specific OS by defining it once in a global section.
+* Global operating system - allows to make all jobs use a specific OS by defining it once in a global section.
 
-* Global environment variables - makes it possible to set environment variables on all jobs.
+* Global environment variables - allows to define environment variables once which applies to all jobs.
 
-Individual jobs can override the global settings.
+Individual jobs can override the global configuration.
 
 # What does the DSL do
-The DSL builds a meta model instance of a pipeline and uses this instance to generate YAML output, which can be executed by the Github actions environment.
+The DSL builds a meta model instance of a pipeline and uses this instance to generate YAML output, which can be executed by the Github actions environment. The meta model is build by using a Construction builder pattern (https://www.martinfowler.com/dslCatalog/constructionBuilder.html)
+
 
 # Limitations
-It is important to notice that there are some limitations to the DSL. This means that the DSL does not (yet) fully implement the specification of the Github actions API. In an ideal world the meta model should be abstracted to a level where the meta model is independent of the underlying platform. This is remains an usolved challenge because there is no standard definition of what concepts that constitutes an automated pipeline.  
+It is important to notice that there are limitations to the DSL. This means that the DSL does not (yet) implement the full specification of the Github actions API. In an ideal world the meta model should be abstracted to a level where the meta model is independent of the underlying platform. This remains an usolved challenge because there is no general agreement of which concepts that constitutes an automated pipeline. Different platforms may share the general idea of automated pipelines, but they do not share the naming of the concepts. Hence, the development of an abstracted meta model would require knowledge from multiple domain experts.
 
 # Demonstration
-
-
-## Example 1
 This repository contains a game named TANKS written in Java. The process of building this game can be automated with a pipeline for Github actions.
 
-The program written in the internal DSL should be self-explanatory to users that have a background in Computer Science, Software Engineering or similar. It is recommended to have some knowledge of C#, Maven and *nix systems.
+The programs written in the internal DSL should be self-explanatory to users that have a background in Computer Science, Software Engineering or similar. It is recommended to have some knowledge of C#, Maven and \*nix systems
+
+## Example 1
+Constructs a pipeline that looks like this: Compile -> Unit test -> Package -> Install
 
 ### Generating the meta model instance
 
@@ -283,7 +284,9 @@ jobs:
 ```
 
 ## Example 2
-This is a very simplified and minimized example of using the DSL. It does contain a global configuration but does not make use of overriding and dependencies.
+This example is simplified and minimized. It contains a global configuration but does not make use of overriding and dependencies.
+
+The pipeline looks like this: Compile -> Unit test
 
 ### Generating the meta model instance
 

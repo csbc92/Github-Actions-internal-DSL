@@ -9,13 +9,13 @@ This internal DSL aims to make it easier to make Github Action pipelines and to 
 
 Added features which is not available in Github actions:
 
-* Global Steps - makes it possible to create steps that are prepended to all defined jobs. This means that instead of writing trivial steps for each job (for instance 'checkout').
+* Global Steps - makes it possible to create steps that are prepended to all defined jobs instead of writing trivial steps for each job (for instance 'checkout').
 
 * Global operating system - makes it possible to make all jobs use a specific OS by defining it once in a global section.
 
 * Global environment variables - makes it possible to set environment variables on all jobs.
 
-Individual jobs makes it possible to override the global settings.
+Individual jobs can override the global settings.
 
 # What does the DSL do
 The DSL builds a meta model instance of a pipeline and uses this instance to generate YAML output, which can be executed by the Github actions environment.
@@ -63,7 +63,7 @@ builder.Pipeline("myPipeline").
                 InDirectory(workDir).
     AddJob("unit-test").
         SetName("Unit test").
-        RunsOn(OperatingSystem.Ubuntu1604).
+        RunsOn(OperatingSystem.Ubuntu1604). // Override the Global configuration's RunsOn
         DependsOn("compile").
         AddStep("Unit Test Step").
             AsShell().
@@ -71,9 +71,9 @@ builder.Pipeline("myPipeline").
                 InDirectory(workDir).
     AddJob("package").
         SetName("Package").
-        RunsOn(OperatingSystem.Ubuntu1804).
+        RunsOn(OperatingSystem.Ubuntu1804). // Override the Global configuration's RunsOn
         DependsOn("unit-test").
-        SetEnvVar("MY_ENV_VAR", "HELLO FYN").
+        SetEnvVar("MY_ENV_VAR", "HELLO FYN"). // Override the Global configuration's MY_ENV_VAR
         SetEnvVar("LOCAL_VAR", "HELLO ODENSE").
         AddStep("Maven package").
             AsShell().
@@ -116,58 +116,58 @@ on: [push]
 
 jobs:
 
-  compile:
+  compile:                                                  # Individual job
     name: Compile
-    runs-on: [ubuntu-latest]
+    runs-on: [ubuntu-latest]                                # Global OS
     env: 
-      MY_ENV_VAR: "HELLO WORLD!"
+      MY_ENV_VAR: "HELLO WORLD!"                            # Global variable
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2                           # Global Step
         name: Default Checkout step
-      - name: Default clean step
+      - name: Default clean step                            # Global Step
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
           echo "Value of global env var: " $MY_ENV_VAR
           mvn clean
-      - name: Compile Step
+      - name: Compile Step                                  # Job's step
         working-directory: ./TANKS
         run: mvn compile
-  unit-test:
+  unit-test:                                                # Individual job
     name: Unit test
-    runs-on: [ubuntu-16.04]
+    runs-on: [ubuntu-16.04]                                 # Override Global OS
     needs: [compile]
     env: 
-      MY_ENV_VAR: "HELLO WORLD!"
+      MY_ENV_VAR: "HELLO WORLD!"                            # Global variable
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2                           # Global step
         name: Default Checkout step
-      - name: Default clean step
+      - name: Default clean step                            # Global step
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
           echo "Value of global env var: " $MY_ENV_VAR
           mvn clean
-      - name: Unit Test Step
+      - name: Unit Test Step                                # Job's step
         working-directory: ./TANKS
         run: mvn verify
   package:
     name: Package
-    runs-on: [ubuntu-18.04]
+    runs-on: [ubuntu-18.04]                                 # Override Global OS
     needs: [unit-test]
     env: 
-      MY_ENV_VAR: "HELLO FYN"
-      LOCAL_VAR: "HELLO ODENSE"
+      MY_ENV_VAR: "HELLO FYN"                               # Override Global variable
+      LOCAL_VAR: "HELLO ODENSE"                             # Job's variable
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2                           # Global step
         name: Default Checkout step
-      - name: Default clean step
+      - name: Default clean step                            # Global step
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
           echo "Value of global env var: " $MY_ENV_VAR
           mvn clean
-      - name: Maven package
+      - name: Maven package                                 # Job's step
         working-directory: ./TANKS
         run: |
           mvn package
@@ -175,20 +175,20 @@ jobs:
           echo "Value of local env var: " $LOCAL_VAR
   install:
     name: Install
-    runs-on: [ubuntu-latest]
+    runs-on: [ubuntu-latest]                                # Global OS
     needs: [package]
     env: 
-      MY_ENV_VAR: "HELLO WORLD!"
+      MY_ENV_VAR: "HELLO WORLD!"                            # Global variable
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2                           # Global step
         name: Default Checkout step
-      - name: Default clean step
+      - name: Default clean step                            # Global step
         working-directory: ./TANKS
         run: |
           echo "My Global Job"
           echo "Value of global env var: " $MY_ENV_VAR
           mvn clean
-      - name: Maven install
+      - name: Maven install                                 # Job's step
         working-directory: ./TANKS
         run: mvn install
 ```

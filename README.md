@@ -9,7 +9,7 @@ This internal DSL aims to make it easier to make Github Action pipelines and to 
 
 Added features which is not available in Github actions:
 
-* Global Steps - makes it possible to create steps that are prepended to all defined jobs instead of writing trivial steps for each job (for instance 'checkout').
+* Global Steps - makes it possible to create steps that are prepended to all defined jobs instead of repeating trivial steps for each job (for instance 'checkout').
 
 * Global operating system - makes it possible to make all jobs use a specific OS by defining it once in a global section.
 
@@ -108,8 +108,6 @@ YAML = codeGen.Generate();
 The output is shown in YAML below with default 2 indentations followed by an example of 4 indentations:
 
 ```YAML
-DSLTests.CodeGenTests.YAMLGeneratorTest.GenerateYAML2
-
 name: myPipeline
 
 on: [push]

@@ -1,5 +1,5 @@
 # Github Actions internal DSL
-This repository contains an internal DSL (written in C#) for creating pipelines with Github Actions
+This repository (https://github.com/csbc92/Github-Actions-internal-DSL) contains an internal DSL (written in C#) for creating pipelines with Github Actions
 <br>
 See more: https://github.com/features/actions
 <br>
@@ -21,12 +21,34 @@ Added features which is not available in Github Actions:
 
 Individual jobs can override the global configuration.
 
-# What does the DSL do
-The DSL builds a meta model instance of a pipeline and uses this instance to generate YAML output, which can be executed by the Github actions environment. The meta model is build by using a Construction builder pattern (https://www.martinfowler.com/dslCatalog/constructionBuilder.html)
+# What does the DSL do?
+The DSL builds a meta model instance of a pipeline and uses this instance to generate YAML output, which can be executed by the Github actions environment.
+
+# How does it work?
+The internal DSL uses the technique of Method Chaining which is a convinient way of programming because developers are notified by the IDE of the allowed constructs. This approach should give the developer a more streamlined experience when using the DSL. The DSL contains multiple builder interfaces and an appropriate builder interface is returned based on the previous method call in the chain. Each method call in the chain subsequently adds information to the builders about how the underlying meta model should be constructed. The meta model is constructed in a bottom-up apprach where the highest level of abstraction (the pipeline) calls the Build()-method on its nested builders, which calls to their nested builders until we hit the bottom and can create the smallest parts. We can then start building larger parts from smaller parts. This pattern is known as the Construction builder pattern (https://www.martinfowler.com/dslCatalog/constructionBuilder.html). The choice of method chaining was based sololy on giving convenience to developers when they write in the DSL. Other approaches are definitely possible to give the language more structure e.g. Nested Functions, Lambdas or Hybrids.
+
+The meta model instance is created and is then passed to a Code Generator which prepares the meta model by manipulating it to suit the output specification. For example, Global Configurations are propagated into each individual job because the concept Global Configuration does not exist in the Github Actions specification. The Code Generator is simply creating a long YAML string using .NET's built-in StringBuilder.
+
+
+**Key techniques used:** Method chaining, Builder pattern, Construction Builder pattern, Context variables, Lookup table (for creating dependencies between jobs).
+
+
+# Structure of the source code
+DSLPipeline/MetaModel - Contains the meta model of the pipeline
+
+DSLPipeline/Builders/v2/Interfaces - contains all the interfaces used by the internal DSL
+
+DSLPipeline/Builders/v2/Implementations - contains implementations of the builder interfaces
+
+DSLPipeline/CodeGenerators - contains the YAML code generator
+
+DSLPipeline/DSLTests - contains a few *incomplete* unit tests
 
 
 # Limitations
 It is important to notice that there are limitations to the DSL. This means that the DSL does not (yet) implement the full specification of the Github actions API. In an ideal world the meta model should be abstracted to a level where the meta model is independent of the underlying platform. This remains an usolved challenge because there is no general agreement of which concepts that constitutes an automated pipeline. Different platforms may share the general idea of automated pipelines, but they do not share the naming of the concepts. Hence, the development of an abstracted meta model would require knowledge from multiple domain experts.
+
+
 
 # Demonstration
 The Github repository https://github.com/csbc92/TANKS contains a game written in Java. The process of building this game can be automated with a pipeline for Github actions.
